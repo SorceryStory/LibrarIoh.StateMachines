@@ -35,6 +35,14 @@ namespace SorceressSpell.LibrarIoh.StateMachines
             }
         }
 
+        protected virtual void PushdownAutomataStateMachine_OnStatePop(TState poppedState)
+        {
+        }
+
+        protected virtual void PushdownAutomataStateMachine_OnStatePush(TState pushedState)
+        {
+        }
+
         protected override void StateMachine_ChangeState(TState state)
         {
             if (
@@ -45,9 +53,9 @@ namespace SorceressSpell.LibrarIoh.StateMachines
                 // Pop it!
                 StateStack.Peek().OnExit();
                 TState previousState = StateStack.Pop();
-                StateStack.Peek().OnResume(previousState);
+                PushdownAutomataStateMachine_OnStatePop(previousState);
 
-                OnStatePop(previousState);
+                StateStack.Peek().OnResume(previousState);
             }
             else if (state != null)
             {
@@ -61,18 +69,10 @@ namespace SorceressSpell.LibrarIoh.StateMachines
                 }
 
                 StateStack.Push(state);
+                PushdownAutomataStateMachine_OnStatePush(state);
+
                 StateStack.Peek().OnEnter(previousState);
-
-                OnStatePush(state);
             }
-        }
-
-        protected virtual void OnStatePop(TState poppedState)
-        {
-        }
-
-        protected virtual void OnStatePush(TState pushedState)
-        {
         }
 
         #endregion Methods

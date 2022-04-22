@@ -18,12 +18,14 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         #region Methods
 
-        public virtual void FixedUpdate(float fixedDeltaTime)
+        public void FixedUpdate(float fixedDeltaTime)
         {
+            State_OnFixedUpdate(fixedDeltaTime);
         }
 
-        public virtual void LateUpdate(float deltaTime)
+        public void LateUpdate(float deltaTime)
         {
+            State_OnLateUpdate(deltaTime);
         }
 
         public void OnEnter(TState previousState)
@@ -31,7 +33,7 @@ namespace SorceressSpell.LibrarIoh.StateMachines
             ReturnState = null;
 
             State_OnEnter(previousState);
-            RegisterInputs();
+            State_RegisterInputs();
         }
 
         public void OnExit()
@@ -39,7 +41,7 @@ namespace SorceressSpell.LibrarIoh.StateMachines
             ReturnState = null;
 
             State_OnExit();
-            UnregisterInputs();
+            State_UnregisterInputs();
         }
 
         public void OnPause()
@@ -47,7 +49,7 @@ namespace SorceressSpell.LibrarIoh.StateMachines
             ReturnState = null;
 
             State_OnPause();
-            UnregisterInputs();
+            State_UnregisterInputs();
         }
 
         public void OnResume(TState previousState)
@@ -55,14 +57,15 @@ namespace SorceressSpell.LibrarIoh.StateMachines
             ReturnState = null;
 
             State_OnResume(previousState);
-            RegisterInputs();
+            State_RegisterInputs();
         }
 
-        public virtual void Update(float deltaTime)
+        public void Update(float deltaTime)
         {
+            State_OnUpdate(deltaTime);
         }
 
-        protected virtual void RegisterInputs()
+        protected virtual void State_RegisterInputs()
         {
         }
 
@@ -74,6 +77,14 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         {
         }
 
+        protected virtual void State_OnFixedUpdate(float fixedDeltaTime)
+        {
+        }
+
+        protected virtual void State_OnLateUpdate(float deltaTime)
+        {
+        }
+
         protected virtual void State_OnPause()
         {
         }
@@ -82,7 +93,11 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         {
         }
 
-        protected virtual void UnregisterInputs()
+        protected virtual void State_OnUpdate(float deltaTime)
+        {
+        }
+
+        protected virtual void State_UnregisterInputs()
         {
         }
 
