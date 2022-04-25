@@ -65,10 +65,6 @@ namespace SorceressSpell.LibrarIoh.StateMachines
             State_OnUpdate(deltaTime);
         }
 
-        protected virtual void State_RegisterInputs()
-        {
-        }
-
         protected virtual void State_OnEnter(TState previousState)
         {
         }
@@ -94,6 +90,10 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         }
 
         protected virtual void State_OnUpdate(float deltaTime)
+        {
+        }
+
+        protected virtual void State_RegisterInputs()
         {
         }
 
