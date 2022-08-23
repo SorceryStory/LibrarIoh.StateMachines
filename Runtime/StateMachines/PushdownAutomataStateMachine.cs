@@ -11,6 +11,25 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         #endregion Fields
 
+        #region Properties
+
+        public override TState CurrentState
+        {
+            get
+            {
+                if (StateStack.Count > 0)
+                {
+                    return StateStack.Peek();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        #endregion Properties
+
         #region Constructors
 
         public PushdownAutomataStateMachine()
@@ -23,16 +42,21 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         #region Methods
 
-        public override TState GetCurrentState()
+        protected virtual void PushdownAutomataStateMachine_ChangeStateStrategy(TState state)
         {
-            if (StateStack.Count > 0)
-            {
-                return StateStack.Peek();
-            }
-            else
-            {
-                return null;
-            }
+            base.StateMachine_ChangeStateStrategy(state);
+        }
+
+        protected virtual void PushdownAutomataStateMachine_OnChangeStateFailure(TState state)
+        {
+        }
+
+        protected virtual void PushdownAutomataStateMachine_OnChangeStateSuccess(TState state)
+        {
+        }
+
+        protected virtual void PushdownAutomataStateMachine_OnStart()
+        {
         }
 
         protected virtual void PushdownAutomataStateMachine_OnStatePop(TState poppedState)
@@ -43,21 +67,36 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         {
         }
 
-        protected override void StateMachine_ChangeState(TState state)
+        protected virtual void PushdownAutomataStateMachine_OnStop()
         {
-            if (
-                StateStack.Count > 1 &&
-                state == StateStack.Peek()
-                )
+        }
+
+        protected override sealed bool StateMachine_ChangeState(TState state)
+        {
+            if (StateStack.Count > 1 && state == StateStack.Peek())
             {
                 // Pop it!
                 StateStack.Peek().OnExit();
                 TState previousState = StateStack.Pop();
                 PushdownAutomataStateMachine_OnStatePop(previousState);
 
-                StateStack.Peek().OnResume(previousState);
+                if (StateStack.TryPeek(out TState topState))
+                {
+                    topState.OnResume(previousState);
+                }
+                else
+                {
+                    Started = false;
+                }
+
+                return true;
             }
-            else if (state != null)
+            else if (StateStack.Contains(state))
+            {
+                // Do not allow the same item to appear twice on the stack.
+                return false;
+            }
+            else
             {
                 // Push it in!
                 TState previousState = null;
@@ -72,7 +111,34 @@ namespace SorceressSpell.LibrarIoh.StateMachines
                 PushdownAutomataStateMachine_OnStatePush(state);
 
                 StateStack.Peek().OnEnter(previousState);
+
+                return true;
             }
+        }
+
+        protected override sealed void StateMachine_ChangeStateStrategy(TState state)
+        {
+            PushdownAutomataStateMachine_ChangeStateStrategy(state);
+        }
+
+        protected override sealed void StateMachine_OnChangeStateFailure(TState state)
+        {
+            PushdownAutomataStateMachine_OnChangeStateFailure(state);
+        }
+
+        protected override sealed void StateMachine_OnChangeStateSuccess(TState state)
+        {
+            PushdownAutomataStateMachine_OnChangeStateSuccess(state);
+        }
+
+        protected override sealed void StateMachine_OnStart()
+        {
+            PushdownAutomataStateMachine_OnStart();
+        }
+
+        protected override sealed void StateMachine_OnStop()
+        {
+            PushdownAutomataStateMachine_OnStop();
         }
 
         #endregion Methods

@@ -5,9 +5,21 @@ namespace SorceressSpell.LibrarIoh.StateMachines
     {
         #region Fields
 
-        protected TState CurrentState;
+        private TState _currentState;
 
         #endregion Fields
+
+        #region Properties
+
+        public override TState CurrentState
+        {
+            get
+            {
+                return _currentState;
+            }
+        }
+
+        #endregion Properties
 
         #region Constructors
 
@@ -19,18 +31,66 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         #region Methods
 
-        public override TState GetCurrentState()
+        protected virtual void FiniteStateMachine_ChangeStateStrategy(TState state)
         {
-            return CurrentState;
+            base.StateMachine_ChangeStateStrategy(state);
         }
 
-        protected override void StateMachine_ChangeState(TState state)
+        protected virtual void FiniteStateMachine_OnChangeStateFailure(TState state)
         {
-            TState previousState = CurrentState;
-            previousState.OnExit();
+        }
 
-            CurrentState = state;
-            CurrentState.OnEnter(previousState);
+        protected virtual void FiniteStateMachine_OnChangeStateSuccess(TState state)
+        {
+        }
+
+        protected virtual void FiniteStateMachine_OnStart()
+        {
+        }
+
+        protected virtual void FiniteStateMachine_OnStop()
+        {
+        }
+
+        protected override sealed bool StateMachine_ChangeState(TState state)
+        {
+            TState previousState = null;
+
+            if (_currentState != null)
+            {
+                previousState = _currentState;
+                previousState.OnExit();
+            }
+
+            _currentState = state;
+            _currentState.OnEnter(previousState);
+
+            return true;
+        }
+
+        protected override sealed void StateMachine_ChangeStateStrategy(TState state)
+        {
+            FiniteStateMachine_ChangeStateStrategy(state);
+        }
+
+        protected override sealed void StateMachine_OnChangeStateFailure(TState state)
+        {
+            FiniteStateMachine_OnChangeStateFailure(state);
+        }
+
+        protected override sealed void StateMachine_OnChangeStateSuccess(TState state)
+        {
+            FiniteStateMachine_OnChangeStateSuccess(state);
+        }
+
+        protected override sealed void StateMachine_OnStart()
+        {
+            FiniteStateMachine_OnStart();
+        }
+
+        protected override sealed void StateMachine_OnStop()
+        {
+            FiniteStateMachine_OnStop();
         }
 
         #endregion Methods

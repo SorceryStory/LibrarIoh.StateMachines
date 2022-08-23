@@ -5,89 +5,102 @@ namespace SorceressSpell.LibrarIoh.StateMachines
     {
         #region Fields
 
-        private bool _started;
+        protected bool Started;
 
         #endregion Fields
+
+        #region Properties
+
+        public abstract TState CurrentState { get; }
+
+        #endregion Properties
 
         #region Constructors
 
         protected StateMachine()
         {
-            _started = false;
+            Started = false;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public void FixedUpdate(float fixedDeltaTime)
+        public void ChangeState(TState state)
         {
-            if (_started)
-            {
-                GetCurrentState().FixedUpdate(fixedDeltaTime);
-            }
-        }
-
-        public abstract TState GetCurrentState();
-
-        public void LateUpdate(float deltaTime)
-        {
-            if (_started)
-            {
-                GetCurrentState().LateUpdate(deltaTime);
-                ChangeState(GetCurrentState().ReturnState);
-            }
+            StateMachine_ChangeStateStrategy(state);
         }
 
         public void Start(TState startingGameState)
         {
-            if (startingGameState != null)
+            if (!Started && startingGameState != null)
             {
-                ChangeState(startingGameState);
+                ChangeStatePrimitive(startingGameState);
 
                 StateMachine_OnStart();
 
-                _started = true;
+                Started = true;
             }
         }
 
-        public void Update(float deltaTime)
+        public void Stop()
         {
-            if (_started)
+            if (Started)
             {
-                StateMachine_OnPreUpdate(deltaTime);
+                StateMachine_OnStop();
 
-                GetCurrentState().Update(deltaTime);
-                ChangeState(GetCurrentState().ReturnState);
-
-                StateMachine_OnPostUpdate(deltaTime);
+                Started = false;
             }
         }
 
-        protected void ChangeState(TState state)
+        protected void ChangeStatePrimitive(TState state)
         {
             if (state != null)
             {
-                StateMachine_ChangeState(state);
-                StateMachine_OnChangeState(state);
+                if (StateMachine_ChangeState(state))
+                {
+                    StateMachine_OnChangeStateSuccess(state);
+                }
+                else
+                {
+                    StateMachine_OnChangeStateFailure(state);
+                }
             }
         }
 
-        protected abstract void StateMachine_ChangeState(TState state);
+        /// <summary>
+        /// </summary>
+        /// <param name="state">The state to change into.</param>
+        /// <returns><c>true</c> if the state change was succesful, <c>false</c> if not.</returns>
+        protected abstract bool StateMachine_ChangeState(TState state);
 
-        protected virtual void StateMachine_OnChangeState(TState state)
+        protected virtual void StateMachine_ChangeStateStrategy(TState state)
+        {
+            if (Started)
+            {
+                ChangeStatePrimitive(state);
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="state">The state the machine failed to changed to.</param>
+        protected virtual void StateMachine_OnChangeStateFailure(TState state)
         {
         }
 
-        protected virtual void StateMachine_OnPostUpdate(float deltaTime)
-        {
-        }
-
-        protected virtual void StateMachine_OnPreUpdate(float deltaTime)
+        /// <summary>
+        /// </summary>
+        /// <param name="state">The state the machine changed to.</param>
+        protected virtual void StateMachine_OnChangeStateSuccess(TState state)
         {
         }
 
         protected virtual void StateMachine_OnStart()
+        {
+        }
+
+        protected virtual void StateMachine_OnStop()
         {
         }
 
