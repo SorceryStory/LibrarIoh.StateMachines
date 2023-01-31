@@ -1,3 +1,3 @@
-# [LibrarIoh.StateMachines](https://github.com/SorceressSpell/LibrarIoh.StateMachines)
+# [LibrarIoh.StateMachines](https://github.com/SorceryStory/LibrarIoh.StateMachines)
 
 State Machines for LibrarIoh.

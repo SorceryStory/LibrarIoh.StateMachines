@@ -1,6 +1,6 @@
 namespace SorceressSpell.LibrarIoh.StateMachines
 {
-    public abstract class StateMachine<TState>
+    public abstract class StateMachine<TState> : IStateMachine<TState>
         where TState : State<TState>
     {
         #region Fields

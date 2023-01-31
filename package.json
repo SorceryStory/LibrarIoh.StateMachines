@@ -1,13 +1,13 @@
 {
   "name": "com.sorceressspell.librarioh.statemachines",
   "displayName": "LibrarIoh.StateMachines",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "library",
   "unity": "2018.1",
-  "description": "LibrarIoh.StateMachines (https://github.com/SorceressSpell/LibrarIoh.StateMachines)\n\nState Machines for LibrarIoh.",
+  "description": "LibrarIoh.StateMachines (https://github.com/SorceryStory/LibrarIoh.StateMachines)\n\nState Machines for LibrarIoh.",
   "dependencies": {},
   "author": {
-    "name": "Sorceress' Spell",
+    "name": "Joana Almeida",
     "email": "Sorceress.Spell@gmail.com",
     "url": "http://SorceressSpell.com"
   },

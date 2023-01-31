@@ -91,6 +91,7 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         protected override sealed void StateMachine_OnStop()
         {
             FiniteStateMachine_OnStop();
+            _currentState = null;
         }
 
         #endregion Methods

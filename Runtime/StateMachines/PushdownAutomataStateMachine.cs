@@ -139,6 +139,7 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         protected override sealed void StateMachine_OnStop()
         {
             PushdownAutomataStateMachine_OnStop();
+            StateStack.Clear();
         }
 
         #endregion Methods
