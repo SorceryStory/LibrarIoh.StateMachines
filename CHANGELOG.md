@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1] - 2023-02-04
+
+### Changed
+
+- `StateMachine`: State change strategy can no longer be overriden by subclasses.
+- `PushDownAutomataStateMachine`: Now pops every state when stopped by default.
+
 ## [0.2.1] - 2023-01-31
 
 ### Added

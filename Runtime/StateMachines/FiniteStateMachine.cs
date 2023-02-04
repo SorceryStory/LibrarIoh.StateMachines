@@ -31,11 +31,6 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         #region Methods
 
-        protected virtual void FiniteStateMachine_ChangeStateStrategy(TState state)
-        {
-            base.StateMachine_ChangeStateStrategy(state);
-        }
-
         protected virtual void FiniteStateMachine_OnChangeStateFailure(TState state)
         {
         }
@@ -50,6 +45,7 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         protected virtual void FiniteStateMachine_OnStop()
         {
+            _currentState?.OnExit();
         }
 
         protected override sealed bool StateMachine_ChangeState(TState state)
@@ -66,11 +62,6 @@ namespace SorceressSpell.LibrarIoh.StateMachines
             _currentState.OnEnter(previousState);
 
             return true;
-        }
-
-        protected override sealed void StateMachine_ChangeStateStrategy(TState state)
-        {
-            FiniteStateMachine_ChangeStateStrategy(state);
         }
 
         protected override sealed void StateMachine_OnChangeStateFailure(TState state)

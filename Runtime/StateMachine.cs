@@ -28,7 +28,10 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         public void ChangeState(TState state)
         {
-            StateMachine_ChangeStateStrategy(state);
+            if (Started)
+            {
+                ChangeStatePrimitive(state);
+            }
         }
 
         public void Start(TState startingGameState)
@@ -73,14 +76,6 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         /// <param name="state">The state to change into.</param>
         /// <returns><c>true</c> if the state change was succesful, <c>false</c> if not.</returns>
         protected abstract bool StateMachine_ChangeState(TState state);
-
-        protected virtual void StateMachine_ChangeStateStrategy(TState state)
-        {
-            if (Started)
-            {
-                ChangeStatePrimitive(state);
-            }
-        }
 
         /// <summary>
         /// </summary>

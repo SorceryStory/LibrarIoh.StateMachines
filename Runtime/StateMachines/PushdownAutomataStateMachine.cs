@@ -42,11 +42,6 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         #region Methods
 
-        protected virtual void PushdownAutomataStateMachine_ChangeStateStrategy(TState state)
-        {
-            base.StateMachine_ChangeStateStrategy(state);
-        }
-
         protected virtual void PushdownAutomataStateMachine_OnChangeStateFailure(TState state)
         {
         }
@@ -69,6 +64,10 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
         protected virtual void PushdownAutomataStateMachine_OnStop()
         {
+            while (StateStack.Count != 0)
+            {
+                ChangeState(StateStack.Peek());
+            }
         }
 
         protected override sealed bool StateMachine_ChangeState(TState state)
@@ -114,11 +113,6 @@ namespace SorceressSpell.LibrarIoh.StateMachines
 
                 return true;
             }
-        }
-
-        protected override sealed void StateMachine_ChangeStateStrategy(TState state)
-        {
-            PushdownAutomataStateMachine_ChangeStateStrategy(state);
         }
 
         protected override sealed void StateMachine_OnChangeStateFailure(TState state)
