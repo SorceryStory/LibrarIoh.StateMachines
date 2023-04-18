@@ -32,7 +32,6 @@ namespace SorceressSpell.LibrarIoh.StateMachines
             State_OnResume(previousState);
         }
 
-
         protected virtual void State_OnEnter(TState previousState)
         {
         }

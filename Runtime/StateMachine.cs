@@ -72,12 +72,14 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         }
 
         /// <summary>
+        /// Strategy stub to change the state.
         /// </summary>
         /// <param name="state">The state to change into.</param>
         /// <returns><c>true</c> if the state change was succesful, <c>false</c> if not.</returns>
         protected abstract bool StateMachine_ChangeState(TState state);
 
         /// <summary>
+        /// Strategy stub to process a state change failure.
         /// </summary>
         /// <param name="state">The state the machine failed to changed to.</param>
         protected virtual void StateMachine_OnChangeStateFailure(TState state)
@@ -85,6 +87,7 @@ namespace SorceressSpell.LibrarIoh.StateMachines
         }
 
         /// <summary>
+        /// Strategy stub to process a state change success.
         /// </summary>
         /// <param name="state">The state the machine changed to.</param>
         protected virtual void StateMachine_OnChangeStateSuccess(TState state)
